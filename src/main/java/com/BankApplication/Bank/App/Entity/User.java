@@ -24,6 +24,7 @@ public class User {
      private long accountNumber;
      private String fullName;
      private String email;
+     private String mobileNumber;
      private String password;
      private long pin;
      private BigDecimal balance;
