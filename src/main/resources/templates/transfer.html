@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Transfer Amount</title>
+     <style>
+          * {
+               margin: 0;
+               padding: 0;
+          }
+
+          body {
+               font-family: sans-serif;
+               /* justify-content: center;
+               align-items: center; */
+               min-height: 100vh;
+               background-color: #94b0ff9c;
+          }
+
+          header {
+               background-color: #1d015d;
+               color: #fff;
+               padding: 10px 10px;
+               text-align: center;
+          }
+
+          nav ul {
+               list-style: none;
+               padding-top: 20px;
+               display: flex;
+               justify-content: space-around;
+          }
+
+
+          nav a {
+               color: #fff;
+               text-decoration: none;
+               transition: all 0.5s ease;
+          }
+
+          nav a:hover {
+               color: #c19a9a;
+
+          }
+
+          h2 {
+               text-align: center;
+               padding: 20px;
+               color: #1d015d;
+          }
+
+          form {
+               width: 350px;
+               margin: 0 auto;
+               padding: 30px;
+               background-color: rgba(169, 190, 201, 0.29);
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               flex-direction: column;
+               border-radius: 40px;
+               text-align: center;
+               color: rgb(12, 17, 21);
+               font-weight: 600;
+               box-shadow: 10px 5px 5px rgb(25, 22, 85);
+
+          }
+
+          label {
+               display: block;
+               margin-bottom: 10px;
+          }
+
+          input[type="number"],
+          input[type="password"] {
+               width: 70%;
+               padding: 10px;
+               margin-bottom: 15px;
+               border: 1px solid #d0c5c5;
+               border-radius: 10px;
+          }
+
+          input[type="submit"] {
+               background-color: #4CAF50;
+               color: white;
+
+               padding: 13px 30px;
+               border: none;
+               border-radius: 8px;
+               cursor: pointer;
+               transition: all 0.5s ease;
+          }
+
+          input[type="submit"]:hover {
+               background-color: #68eb6c;
+
+               padding: 15px 33px;
+
+          }
+
+          form a {
+               text-decoration: none;
+               background-color: #f71c44;
+               color: white;
+               padding: 10px 20px;
+               margin-top: 10px;
+               border: none;
+               border-radius: 8px;
+               cursor: pointer;
+               transition: all 0.5s ease;
+          }
+
+          form a:hover {
+
+               background-color: #c30427;
+
+               padding: 15px 20px;
+
+          }
+     </style>
+</head>
+
+<body>
+     <header>
+          <nav>
+               <h1>Bank Application</h1>
+               <ul>
+                    <!-- <li>Profile</li> -->
+                    <li><a href="/dashboard">Home</a></li>
+                    <li><a href="/transactions">Transactions</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
+                    <li><a href="/logout">Logout</a></li>
+
+               </ul>
+          </nav>
+     </header>
+     <h2>Send Amount</h2>
+     <form action="/transfer" method="post">
+          <label for="accountNumber">Enter Recipient Account Number</label><input type="number" name=""
+               id="accountNumber">
+          <label for="amount">Enter Amount</label><input type="number" name="" id="amount">
+          <label for="pin">Enter transaction PIN</label><input type="password" name="" id="pin">
+          <input type="submit" value="Send">
+          <a href="/dashboard"> Cancel</a>
+     </form>
+</body>
+
+</html>

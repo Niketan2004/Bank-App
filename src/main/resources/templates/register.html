@@ -5,6 +5,7 @@
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>Bank App-Register</title>
+     <link rel="stylesheet" href="" th:href="@{/style.css}">
      <style>
           * {
                margin: 0;
@@ -123,6 +124,13 @@
                color: #007bff;
                text-decoration: none;
           }
+
+          .error-message {
+               color: red;
+               text-align: center;
+               font-weight: bold;
+               margin-bottom: 10px;
+          }
      </style>
 </head>
 
@@ -146,7 +154,7 @@
                     <label for="password"> Enter Password</label>
                     <input type="password" name="password" id="password" required>
 
-                    <label for="pin"> Enter PIN </label>
+                    <label for="pin"> Set Transaction PIN </label>
                     <input type="number" name="pin" id="pin" minlength="4" required>
 
                     <input type="submit" name="Register" id="submit" value="Register">
@@ -156,6 +164,7 @@
                </form>
                <span>Already have Account?<a href="/login">Login Here</a></span>
           </div>
+          <div th:if="${error}" class="error-message">User Already Exists ! Please Log In</div>
 
 
      </div>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Bank App-Dashboard</title>
+     <!-- <link rel="stylesheet" href="" th:href="@{/style.css}"> -->
+     <style>
+          * {
+               margin: 0;
+               padding: 0;
+          }
+
+          body {
+               font-family: sans-serif;
+               /* justify-content: center;
+               align-items: center; */
+               min-height: 100vh;
+               background-color: #94b0ff9c;
+          }
+
+          header {
+               background-color: #1d015d;
+               color: #fff;
+               padding: 10px 10px;
+               text-align: left;
+          }
+
+          nav ul {
+               list-style: none;
+               display: flex;
+               margin-top: 20px;
+               justify-content: space-around;
+          }
+
+
+
+          nav a {
+               color: #fff;
+               text-decoration: none;
+               transition: all 0.5s ease;
+
+          }
+
+          nav a:hover {
+               color: #c19a9a;
+
+          }
+
+          .userdetails {
+               width: 500px;
+               height: 400px;
+               margin: 20px auto;
+               padding: 30px;
+               background-color: rgba(169, 190, 201, 0.54);
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               flex-direction: column;
+               border-radius: 40px;
+               text-align: center;
+               gap: 100px;
+               color: rgb(12, 17, 21);
+               font-weight: 600;
+               box-shadow: 10px 5px 5px rgb(25, 22, 85);
+          }
+
+          main a {
+
+               display: flex;
+               justify-content: center;
+               margin: 20px auto;
+               padding: 20px;
+               background-color: #115e8b;
+               color: white;
+               border-radius: 10px;
+               text-decoration: none;
+               width: 200px;
+               transition: all 0.5s ease;
+
+          }
+
+          main a:hover {
+
+               padding: 25px;
+               background-color: #201e8b;
+
+
+          }
+     </style>
+</head>
+
+<body>
+     <header>
+          <nav>
+               <h1>Bank Application</h1>
+               <ul>
+                    <!-- <li>Profile</li> -->
+                    <li><a href="/dashboard">Home</a></li>
+                    <li><a href="/transactions">Transactions</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
+                    <li><a href="/logout">Logout</a></li>
+
+               </ul>
+          </nav>
+     </header>
+     <main th:each="user:${User}">
+          <div class="userdetails">
+               <h4 th:text="'Welcome ' + ${user.fullName}">user</h4>
+               <h4 th:text="'Account Number ' + ${user.accountNumber}">accountNumber</h4>
+               <h3 th:text="'Your Account Balance is ₹' + ${user.balance}">balance</h3>
+          </div>
+          <div>
+
+               <a href="/transfer">Transfer Money</a>
+               <a href="/transactions"> Check Transaction History</a>
+          </div>
+     </main>
+</body>
+
+</html>
