@@ -3,6 +3,8 @@ package com.BankApplication.Bank.App.Entity;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.hibernate.validator.constraints.UniqueElements;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,6 +25,7 @@ public class User {
      @GeneratedValue(strategy = GenerationType.AUTO)
      private long accountNumber;
      private String fullName;
+     
      private String email;
      private String mobileNumber;
      private String password;

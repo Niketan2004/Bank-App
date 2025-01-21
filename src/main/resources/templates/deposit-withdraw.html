@@ -51,6 +51,10 @@
                color: #1d015d;
           }
 
+          div {
+               margin-top: 150px;
+          }
+
           form {
                width: 350px;
                margin: 0 auto;
@@ -85,7 +89,8 @@
           input[type="submit"] {
                background-color: #4CAF50;
                color: white;
-
+               
+               font-weight: 800px;
                padding: 13px 30px;
                border: none;
                border-radius: 8px;
@@ -103,6 +108,7 @@
           form a {
                text-decoration: none;
                background-color: #f71c44;
+             
                color: white;
                padding: 10px 20px;
                margin-top: 10px;
@@ -136,18 +142,48 @@
                </ul>
           </nav>
      </header>
-     <h2>Send Amount</h2>
-     <form action="/transfer" method="post">
-          <label for="accountNumber">Enter Recipient Account Number</label><input type="number" name=""
-               id="accountNumber">
-          <label for="amount">Enter Amount</label><input type="number" name="" id="amount">
-          <label for="pin">Enter transaction PIN</label><input type="password" name="" id="pin">
-          <input type="submit" value="Send">
-          <a href="/dashboard"> Cancel</a>
-     </form>
-     <div th:if="${error}" class="error-message">
-          Invalid username or password!
+
+     <div>
+
+
+          <form action="" th:action="${/deposit}" method="post" id="transactionForm">
+
+               <label for="amount">Enter Amount</label><input type="number" name="" id="amount">
+               <label for="pin">Enter transaction PIN</label><input type="password" name="" id="pin">
+               <input type="submit" value="Deposit">
+               <button type="button" id="withdrawButton">Withdraw</button>
+               <!-- <a  href="" th:href="@{/withdraw-amount}"> Withdraw</a> -->
+          </form>
+          <div th:if="${error}" class="error-message">
+              Something Wrong Happen!
+          </div>
      </div>
+     <script>
+       window.addEventListener('DOMContentLoaded', function () {
+               const currentUrl = window.location.pathname;
+               const withdrawLink = document.querySelector('a[th\\:href="@{/withdraw}"]');
+               const depositForm = document.querySelector('form[th\\:action="${/deposit}"]');
+
+               if (currentUrl.endsWith('/deposit')) {
+                    // Hide the "Withdraw" button
+                    if (withdrawLink) {
+                         withdrawLink.style.display = 'none';
+                    }
+               } else if (currentUrl.endsWith('/withdraw')) {
+                    // Hide the "Deposit" form
+                    if (depositForm) {
+                         depositForm.style.display = 'none';
+                    }
+               }
+          });
+
+          document.getElementById('withdrawButton').addEventListener('click', function () {
+                    const form = document.getElementById('transactionForm');
+                    form.action = '/withdraw'; // Change form action to /withdraw
+                    form.submit(); // Submit the form
+               });
+
+     </script>
 </body>
 
 </html>
