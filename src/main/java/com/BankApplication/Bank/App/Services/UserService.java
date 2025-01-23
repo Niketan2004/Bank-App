@@ -53,7 +53,7 @@ public class UserService implements UserDetailsService {
           user.setFullName(name);
           user.setEmail(email);
           user.setMobileNumber(mobile);
-          // user.setPassword(passwordEncoder.encode(password));
+          user.setPassword(passwordEncoder.encode(password));
           user.setPin(pin);
           user.setBalance(BigDecimal.ZERO);
 

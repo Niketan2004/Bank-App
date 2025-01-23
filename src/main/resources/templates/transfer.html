@@ -137,7 +137,7 @@
           </nav>
      </header>
      <h2>Send Amount</h2>
-     <form action="/transfer" th:action= "${/transfer}" method="post">
+     <form action="/transfer" th:action= "@{/transfer}" method="post">
           <label for="accountNumber">Enter Recipient Account Number</label><input type="number" name=""
                id="accountNumber">
           <label for="amount">Enter Amount</label><input type="number" name="" id="amount">

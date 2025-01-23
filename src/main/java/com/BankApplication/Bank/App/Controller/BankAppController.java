@@ -84,17 +84,16 @@ public class BankAppController {
      // register user to database and redirects it to dashboard
      @PostMapping("/register-user")
      public String registerUser(@ModelAttribute User user, Model model) {
-          System.out.println(user.getEmail());
+          System.out.println("Received user: " + user); // Should print the user details
+
           try {
                userService.registerUser(user.getFullName(), user.getEmail(), user.getMobileNumber(), user.getPassword(),
                          user.getPin());
-
-               return "redirect:/login";
+               return "redirect:/login"; // Redirect to login page
           } catch (Exception e) {
                model.addAttribute("error", e.getMessage());
-               return "redirect:/register";
+               return "redirect:/register"; // Redirect back to register page if there is an error
           }
-
      }
 
      // Verify user when login and if exists redirect it to dashboard
