@@ -51,5 +51,5 @@ public class User {
           this.balance = balance;
           this.transactions = transactions;
           this.authorities = authorities;
-     }
+    }
 }

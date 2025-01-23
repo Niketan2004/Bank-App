@@ -5,7 +5,7 @@
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>Bank App-Register</title>
-     <link rel="stylesheet" href="" th:href="@{/style.css}">
+     <!-- <link rel="stylesheet" href="" th:href="@{/style.css}"> -->
      <style>
           * {
                margin: 0;
@@ -141,7 +141,7 @@
 
 
                <h3>Please Register Yourself</h3>
-               <form action="" th:action= "${/register}" method="post">
+               <form action="" th:action="@{/register-user}" method="post">
                     <label for="fullName"> Enter Full name </label>
                     <input type="text" name="fullName" id="fullName" required>
 
@@ -162,7 +162,7 @@
 
 
                </form>
-               <span>Already have Account?<a href="/login" th:href= "@{/login}">Login Here</a></span>
+               <span>Already have Account?<a href="" th:href="@{/login}">Login Here</a></span>
           </div>
           <div th:if="${error}" class="error-message">User Already Exists ! Please Log In</div>
 

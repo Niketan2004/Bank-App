@@ -41,8 +41,10 @@ public class UserConfig {
      public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
           return http
                     .csrf(csrf -> csrf.disable()) // Consider enabling CSRF protection in production
+                    .csrf(csrf -> csrf.disable())
                     .authorizeHttpRequests(
-                              auth -> auth.requestMatchers("/register", "/test","/login", "/resources/**").permitAll()
+                              auth -> auth
+                                        .requestMatchers("/login", "/register", "/error", "/style.css", "/js/**", "/images/**","/test").permitAll()
                                         .anyRequest().authenticated())
                     .formLogin(form -> form.loginPage("/login")
                               .loginProcessingUrl("/login")

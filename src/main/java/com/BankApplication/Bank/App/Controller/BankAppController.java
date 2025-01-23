@@ -23,17 +23,17 @@ public class BankAppController {
      @Autowired
      private UserService userService;
 
-     @Autowired
-     private AuthenticationManager authenticationManager;
+     // @Autowired
+     // private AuthenticationManager authenticationManager;
      @GetMapping("/test")
      public String test() {
-          return "hello";
+          return "test";
      }
 
      // Shows Register form to the user
      @GetMapping("/register")
-     public String registerForm() {
-          return "register";
+     public String showRegisterPage() {
+          return "register"; // Ensure there's a "register.html" in the `templates` folder
      }
 
      // Shows Login form to the user
@@ -48,7 +48,7 @@ public class BankAppController {
           String username = SecurityContextHolder.getContext().getAuthentication().getName();
           User user = userService.findUser(username).orElseThrow();
           model.addAttribute("User", user);
-        
+
           return "dashboard";
      }
 
@@ -82,8 +82,9 @@ public class BankAppController {
      }
 
      // register user to database and redirects it to dashboard
-     @PostMapping("/register")
+     @PostMapping("/register-user")
      public String registerUser(@ModelAttribute User user, Model model) {
+          System.out.println(user.getEmail());
           try {
                userService.registerUser(user.getFullName(), user.getEmail(), user.getMobileNumber(), user.getPassword(),
                          user.getPin());
@@ -99,14 +100,15 @@ public class BankAppController {
      // Verify user when login and if exists redirect it to dashboard
      // @PostMapping("/login")
      // public String loginUser(@ModelAttribute User user, Model model) {
-     //      // // Perform authentication using Spring Security mechanisms
-     //      // // (e.g., username/password authentication)
-     //      Authentication authentication = authenticationManager.authenticate(
-     //                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+     // // // Perform authentication using Spring Security mechanisms
+     // // // (e.g., username/password authentication)
+     // Authentication authentication = authenticationManager.authenticate(
+     // new UsernamePasswordAuthenticationToken(user.getEmail(),
+     // user.getPassword()));
 
-     //      SecurityContextHolder.getContext().setAuthentication(authentication);
+     // SecurityContextHolder.getContext().setAuthentication(authentication);
 
-     //      return "redirect:/dashboard";
+     // return "redirect:/dashboard";
      // }
 
      // deposit method to deposit money
@@ -124,7 +126,7 @@ public class BankAppController {
           }
      }
 
-     // deposit method to deposit money
+     // // deposit method to deposit money
      @PostMapping("/withdraw-amount")
      public String withdrawAmount(@RequestAttribute BigDecimal amount, @RequestAttribute long pin, Model model) {
           // gets username
@@ -145,7 +147,7 @@ public class BankAppController {
 
      }
 
-     // deposit method to deposit money
+     // // transfer method to traansfer money
      @PostMapping("/transfer")
      public String transferAmount(@RequestAttribute long accountnumber, @RequestAttribute BigDecimal amount,
                @RequestAttribute long pin, Model model) {

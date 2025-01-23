@@ -23,6 +23,7 @@ import com.BankApplication.Bank.App.Repository.TransactionRepository;
 import com.BankApplication.Bank.App.Repository.UserRepository;
 
 @Service
+//
 public class UserService implements UserDetailsService {
      @Autowired
      PasswordEncoder passwordEncoder;
@@ -52,7 +53,7 @@ public class UserService implements UserDetailsService {
           user.setFullName(name);
           user.setEmail(email);
           user.setMobileNumber(mobile);
-          user.setPassword(passwordEncoder.encode(password));
+          // user.setPassword(passwordEncoder.encode(password));
           user.setPin(pin);
           user.setBalance(BigDecimal.ZERO);
 
@@ -98,8 +99,7 @@ public class UserService implements UserDetailsService {
 
      // Returns list of all the transactions
      public List<Transaction> transactionHistory(User user) {
-     return
-     transactionRepository.findByUser_AccountNumber(user.getAccountNumber());
+          return transactionRepository.findByUser_AccountNumber(user.getAccountNumber());
      }
 
      // Transfering amount to another user/account number
