@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Bank App-Transactions</title>
+     <!-- <link rel="stylesheet" href="" th:href="@{/style.css}"> -->
+     <style>
+          * {
+               margin: 0;
+               padding: 0;
+          }
+
+          body {
+               font-family: sans-serif;
+               /* justify-content: center;
+               align-items: center; */
+               min-height: 100vh;
+               background-color: #94b0ff9c;
+          }
+
+          header {
+               background-color: #1d015d;
+               color: #fff;
+               padding: 10px 10px;
+               text-align: left;
+          }
+
+          nav ul {
+               list-style: none;
+               display: flex;
+               margin-top: 20px;
+               justify-content: space-around;
+          }
+
+
+
+          nav a {
+               color: #fff;
+               text-decoration: none;
+               transition: all 0.5s ease;
+
+          }
+
+          nav a:hover {
+               color: #c19a9a;
+
+          }
+
+          h3 {
+               text-align: center;
+               padding: 30px;
+               color: #1d015d;
+          }
+
+          table {
+           margin-left: 50px;
+               text-align: center;
+             border: 3px solid ;
+               table-layout: auto;
+               width: 90%;
+               border-collapse: collapse;
+          }
+          table th, table td{
+               border: 3px solid ;
+              
+          }
+     </style>
+</head>
+
+<body>
+     <header>
+          <nav>
+               <h1>Bank Application</h1>
+               <ul>
+                    <!-- <li>Profile</li> -->
+                    <li><a href="/dashboard">Home</a></li>
+                    <li><a href="/transactions">Transactions</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
+                    <li><a href="/logout">Logout</a></li>
+
+               </ul>
+          </nav>
+     </header>
+     <main>
+          <h3>Your Transactions are</h3>
+          <table>
+
+               <thead>
+                    <th>Id</th>
+                    <th>Amount</th>
+                    <th>Type</th>
+                    <th>Date</th>
+
+               </thead>
+               <tbody>
+
+                    <tr th:each="transactions:${Transaction}">
+                         <td th:text="${transaction.transctionId}">id</td>
+                         <td th:text="${transaction.amount}">amount</td>
+                         <td th:text="${transaction.type}">type</td>
+                         <td th:text="${transaction.timestamp}">date</td>
+                    </tr>
+               </tbody>
+          </table>
+     </main>
+</body>
+
+</html>

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.BankApplication.Bank.App.Entity.User;
 import com.BankApplication.Bank.App.Services.UserService;
@@ -54,6 +55,18 @@ public class BankAppController {
      public String transfer() {
           return "transfer";
      }
+
+     // Showing the list of all the transactions to user
+     // @GetMapping("/transactions")
+     // public String showTransactions(Model model)
+     // {
+     //      String username = SecurityContextHolder.getContext().getAuthentication().getName();
+     //      User user = userService.findUser(username).orElseThrow();
+
+     //      model.addAttribute("Tranasaction",userService.transactionHistory(user));
+
+     //      return "transaction";
+     // }
 
      // register user to database and redirects it to dashboard
      @PostMapping("/register")
@@ -131,7 +144,7 @@ public class BankAppController {
                }
           } catch (Exception e) {
                model.addAttribute("error", e.getMessage());
-               return "redirect:/withdraw";
+               return "redirect:/transfer";
           }
           return "redirect:/dashboard";
 

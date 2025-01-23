@@ -21,14 +21,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Transaction {
      @Id
-     @GeneratedValue(strategy = GenerationType.AUTO)
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
      private long transactionId;
      private BigDecimal amount;
      private String type;
      private LocalDateTime timestamp;
-
-     @ManyToOne
-     @JoinColumn(name = "account_number")
+  
+     @ManyToOne(optional = false)
+     @JoinColumn(name = "accountNumber")
      private User user;
 
 }

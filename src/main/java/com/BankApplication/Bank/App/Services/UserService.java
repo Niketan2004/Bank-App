@@ -2,13 +2,18 @@ package com.BankApplication.Bank.App.Services;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import javax.management.RuntimeErrorException;
-
-import org.hibernate.annotations.CurrentTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +23,7 @@ import com.BankApplication.Bank.App.Repository.TransactionRepository;
 import com.BankApplication.Bank.App.Repository.UserRepository;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
      @Autowired
      PasswordEncoder passwordEncoder;
 
@@ -59,6 +64,7 @@ public class UserService {
      public void deposit(User user, BigDecimal amount) {
           // Balance added to the user account
           user.setBalance(user.getBalance().add(amount));
+          userRepository.save(user);
 
           Transaction transaction = new Transaction();
           // Setting transaction records
@@ -91,41 +97,55 @@ public class UserService {
      }
 
      // Returns list of all the transactions
-     public List<Transaction> transactionHistory(User user) {
-          return transactionRepository.findByAccountNumber(user.getAccountNumber());
-     }
+     // public List<Transaction> transactionHistory(User user) {
+     // return
+     // transactionRepository.findbyAccountNumber(user.getAccountNumber());
+     // }
 
      // Transfering amount to another user/account number
-     public void transferAmount(User fromuser, long toAccountNumber, BigDecimal amount) {
-          // checks recivers account exists or not
-          if (fromuser.getBalance().compareTo(amount) < 0) {
-               throw new RuntimeException("Insufficiant Balance !");
+     public void transferAmount(User fromUser, long toAccountNumber, BigDecimal amount) {
+          if (fromUser.getBalance().compareTo(amount) < 0) {
+               throw new RuntimeException("Insufficient Balance!");
           }
-          // if exists then it will add amount to reciever and subtracts amount from
-          // sender
-          User user = userRepository.findById(toAccountNumber)
-                    .orElseThrow(() -> new RuntimeException("User not found"));
-          // setting balance of recievers account
-          user.setBalance(user.getBalance().add(amount));
-          userRepository.save(user);
-          // setting balance of senders account by subtracting amount sent
-          fromuser.setBalance(fromuser.getBalance().subtract(amount));
-          userRepository.save(fromuser);
 
+          User toUser = userRepository.findById(toAccountNumber)
+                    .orElseThrow(() -> new RuntimeException("Recipient not found"));
+
+          fromUser.setBalance(fromUser.getBalance().subtract(amount));
+          toUser.setBalance(toUser.getBalance().add(amount));
+
+          // Create transaction records
+          Transaction senderTransaction = new Transaction();
+          senderTransaction.setUser(fromUser);
+          senderTransaction.setAmount(amount.negate());
+          senderTransaction.setType("Transfer");
+          senderTransaction.setTimestamp(LocalDateTime.now());
+          transactionRepository.save(senderTransaction);
+
+          Transaction recipientTransaction = new Transaction();
+          recipientTransaction.setUser(toUser);
+          recipientTransaction.setAmount(amount);
+          recipientTransaction.setType("Transfer");
+          recipientTransaction.setTimestamp(LocalDateTime.now());
+          transactionRepository.save(recipientTransaction);
+
+          userRepository.save(fromUser);
+          userRepository.save(toUser);
      }
+
+     @Override
+     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+          User user = userRepository.findUserByEmail(username).orElseThrow();
+          if (user == null) {
+               throw new UsernameNotFoundException("User not found");
+          }
+          return new org.springframework.security.core.userdetails.User(
+                    user.getEmail(), user.getPassword(), new ArrayList<>()); // Add authorities here
+     }
+
+     public Collection<? extends GrantedAuthority> authorities() {
+          // If roles are dynamic, fetch them from the database
+          return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+     }
+
 }
-
-// private String fullName;
-// private String email;
-// private String mobileNumber;
-// private String password;
-// private long pin;
-
-// private long transactionId;
-// private BigDecimal amount;
-// private String type;
-// private LocalDateTime timestamp;
-
-// @ManyToOne
-// @JoinColumn(name = "account_number")
-// private User user;
