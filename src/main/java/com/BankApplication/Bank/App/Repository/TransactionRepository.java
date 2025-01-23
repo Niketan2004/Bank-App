@@ -8,6 +8,6 @@ import com.BankApplication.Bank.App.Entity.Transaction;
 
 public interface TransactionRepository extends JpaRepository<Transaction,Long> {
 
-      // public List<Transaction> findByAccountNumber(long accountNumber);
+      List<Transaction> findByUser_AccountNumber(long accountNumber);
      
 }

@@ -97,10 +97,10 @@ public class UserService implements UserDetailsService {
      }
 
      // Returns list of all the transactions
-     // public List<Transaction> transactionHistory(User user) {
-     // return
-     // transactionRepository.findbyAccountNumber(user.getAccountNumber());
-     // }
+     public List<Transaction> transactionHistory(User user) {
+     return
+     transactionRepository.findByUser_AccountNumber(user.getAccountNumber());
+     }
 
      // Transfering amount to another user/account number
      public void transferAmount(User fromUser, long toAccountNumber, BigDecimal amount) {

@@ -162,7 +162,7 @@
 
 
                </form>
-               <span>Already have Account?<a href="/login">Login Here</a></span>
+               <span>Already have Account?<a href="/login" th:href= "@{/login}">Login Here</a></span>
           </div>
           <div th:if="${error}" class="error-message">User Already Exists ! Please Log In</div>
 

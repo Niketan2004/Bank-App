@@ -31,35 +31,28 @@ public class UserConfig {
      @Bean
      public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
           return http.getSharedObject(AuthenticationManagerBuilder.class)
-                    .userDetailsService(userService) // Use your custom UserService
+                    .userDetailsService(userService)
                     .passwordEncoder(passwordEncoder())
                     .and()
                     .build();
      }
-    
+
      @Bean
      public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-          return http.csrf(csrf -> csrf.disable())
-                    .authorizeHttpRequests(auth -> {
-                         auth.requestMatchers("/register", "/login", "/resources/**").permitAll()
-                                   .anyRequest().authenticated();
-                    })
-                    .formLogin(form -> {
-                         form.loginPage("/login")
-                                   .loginProcessingUrl("/login")
-                                   .defaultSuccessUrl("/dashboard", true)
-                                   .permitAll();
-                    })
-                    .logout(logout -> {
-                         logout.invalidateHttpSession(true)
-                                   .clearAuthentication(true)
-                                   .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                                   .logoutSuccessUrl("/login?logout")
-                                   .permitAll();
-                    })
-                    .headers(header -> {
-                         header.frameOptions().sameOrigin();
-                    })
+          return http
+                    .csrf(csrf -> csrf.disable()) // Consider enabling CSRF protection in production
+                    .authorizeHttpRequests(
+                              auth -> auth.requestMatchers("/register", "/test","/login", "/resources/**").permitAll()
+                                        .anyRequest().authenticated())
+                    .formLogin(form -> form.loginPage("/login")
+                              .loginProcessingUrl("/login")
+                              .defaultSuccessUrl("/dashboard", true)
+                              .permitAll())
+                    .logout(logout -> logout.invalidateHttpSession(true)
+                              .clearAuthentication(true)
+                              .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                              .logoutSuccessUrl("/login?logout")
+                              .permitAll())
                     .build();
      }
 }

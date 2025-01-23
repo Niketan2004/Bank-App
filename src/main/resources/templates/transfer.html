@@ -126,24 +126,24 @@
      <header>
           <nav>
                <h1>Bank Application</h1>
-               <ul>
-                    <!-- <li>Profile</li> -->
-                    <li><a href="/dashboard">Home</a></li>
-                    <li><a href="/transactions">Transactions</a></li>
-                    <li><a href="/contact">Contact Us</a></li>
-                    <li><a href="/logout">Logout</a></li>
-
-               </ul>
+          <ul>
+               <!-- <li>Profile</li> -->
+               <li><a href="" th:href="@{/dashboard}">Home</a></li>
+               <li><a href="" th:href="@{/transactions}">Transactions</a></li>
+               <li><a href="" th:href="@{/contact}">Contact Us</a></li>
+               <li><a href="" th:href="@{/logout}">Logout</a></li>
+          
+          </ul>
           </nav>
      </header>
      <h2>Send Amount</h2>
-     <form action="/transfer" method="post">
+     <form action="/transfer" th:action= "${/transfer}" method="post">
           <label for="accountNumber">Enter Recipient Account Number</label><input type="number" name=""
                id="accountNumber">
           <label for="amount">Enter Amount</label><input type="number" name="" id="amount">
           <label for="pin">Enter transaction PIN</label><input type="password" name="" id="pin">
           <input type="submit" value="Send">
-          <a href="/dashboard"> Cancel</a>
+          <a href="/dashboard" th:href= "@{/dashboard}"> Cancel</a>
      </form>
      <div th:if="${error}" class="error-message">
           Invalid username or password!

@@ -3,6 +3,9 @@ package com.BankApplication.Bank.App.Controller;
 import java.math.BigDecimal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +23,13 @@ public class BankAppController {
      @Autowired
      private UserService userService;
 
+     @Autowired
+     private AuthenticationManager authenticationManager;
+     @GetMapping("/test")
+     public String test() {
+          return "hello";
+     }
+
      // Shows Register form to the user
      @GetMapping("/register")
      public String registerForm() {
@@ -34,7 +44,11 @@ public class BankAppController {
 
      // Shows dashboard to the user
      @GetMapping("/dashboard")
-     public String dashboard() {
+     public String dashboard(Model model) {
+          String username = SecurityContextHolder.getContext().getAuthentication().getName();
+          User user = userService.findUser(username).orElseThrow();
+          model.addAttribute("User", user);
+        
           return "dashboard";
      }
 
@@ -57,16 +71,15 @@ public class BankAppController {
      }
 
      // Showing the list of all the transactions to user
-     // @GetMapping("/transactions")
-     // public String showTransactions(Model model)
-     // {
-     //      String username = SecurityContextHolder.getContext().getAuthentication().getName();
-     //      User user = userService.findUser(username).orElseThrow();
+     @GetMapping("/transactions")
+     public String showTransactions(Model model) {
+          String username = SecurityContextHolder.getContext().getAuthentication().getName();
+          User user = userService.findUser(username).orElseThrow();
 
-     //      model.addAttribute("Tranasaction",userService.transactionHistory(user));
+          model.addAttribute("Transaction", userService.transactionHistory(user));
 
-     //      return "transaction";
-     // }
+          return "transaction";
+     }
 
      // register user to database and redirects it to dashboard
      @PostMapping("/register")
@@ -84,14 +97,17 @@ public class BankAppController {
      }
 
      // Verify user when login and if exists redirect it to dashboard
-     @PostMapping("/login")
-     public String loginUser(Model model) { // @ModelAttribute User user,
-          String email = SecurityContextHolder.getContext().getAuthentication().getName();
+     // @PostMapping("/login")
+     // public String loginUser(@ModelAttribute User user, Model model) {
+     //      // // Perform authentication using Spring Security mechanisms
+     //      // // (e.g., username/password authentication)
+     //      Authentication authentication = authenticationManager.authenticate(
+     //                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
 
-          User user2 = userService.findUser(email).orElseThrow(() -> new RuntimeException("User not found"));
-          model.addAttribute("User", user2);
-          return "dashboard";
-     }
+     //      SecurityContextHolder.getContext().setAuthentication(authentication);
+
+     //      return "redirect:/dashboard";
+     // }
 
      // deposit method to deposit money
      @PostMapping("/deposit")
