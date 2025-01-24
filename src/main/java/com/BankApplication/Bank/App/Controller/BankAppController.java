@@ -1,8 +1,12 @@
 package com.BankApplication.Bank.App.Controller;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -11,20 +15,29 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.BankApplication.Bank.App.Entity.User;
+import com.BankApplication.Bank.App.Repository.UserRepository;
 import com.BankApplication.Bank.App.Services.UserService;
+
+import jakarta.validation.Valid;
 
 @Controller
 public class BankAppController {
      @Autowired
      private UserService userService;
 
-     // @Autowired
-     // private AuthenticationManager authenticationManager;
+     @Autowired
+     private UserRepository userRepository;
+
+     @Autowired
+     private AuthenticationManager authenticationManager;
      @GetMapping("/test")
      public String test() {
           return "test";
@@ -82,33 +95,50 @@ public class BankAppController {
      }
 
      // register user to database and redirects it to dashboard
+     // @PostMapping("/register-user")
+     // public ResponseEntity<Map<String, Object>> registerUser(@RequestBody User user) {
+     //      Map<String, Object> response = new HashMap<>();
+     //      try {
+     //           // Process the user registration (save user to database, etc.)
+     //           userService.registerUser(user);
+
+     //           // Respond with success message
+     //           response.put("success", true);
+     //           return ResponseEntity.ok(response);
+     //      } catch (Exception e) {
+     //           // Handle registration error
+     //           response.put("success", false);
+     //           response.put("message", "Error registering user: " + e.getMessage());
+     //           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+     //      }
+     // }
+
      @PostMapping("/register-user")
      public String registerUser(@ModelAttribute User user, Model model) {
-          System.out.println("Received user: " + user); // Should print the user details
+     System.out.println("Received user: " + user.toString()); // Should print theuser details
 
-          try {
-               userService.registerUser(user.getFullName(), user.getEmail(), user.getMobileNumber(), user.getPassword(),
-                         user.getPin());
-               return "redirect:/login"; // Redirect to login page
-          } catch (Exception e) {
-               model.addAttribute("error", e.getMessage());
-               return "redirect:/register"; // Redirect back to register page if there is an error
-          }
+     try {
+    userService.registerUser(user);
+     return "redirect:/login"; // Redirect to login page
+     } catch (Exception e) {
+     model.addAttribute("error", e.getMessage());
+     return "redirect:/register"; // Redirect back to register page if there is an error
+     }
      }
 
      // Verify user when login and if exists redirect it to dashboard
-     // @PostMapping("/login")
-     // public String loginUser(@ModelAttribute User user, Model model) {
-     // // // Perform authentication using Spring Security mechanisms
-     // // // (e.g., username/password authentication)
-     // Authentication authentication = authenticationManager.authenticate(
-     // new UsernamePasswordAuthenticationToken(user.getEmail(),
-     // user.getPassword()));
+     @PostMapping("/login")
+     public String loginUser(@ModelAttribute User user, Model model) {
+     // // Perform authentication using Spring Security mechanisms
+     // // (e.g., username/password authentication)
+     Authentication authentication = authenticationManager.authenticate(
+     new UsernamePasswordAuthenticationToken(user.getEmail(),
+     user.getPassword()));
 
-     // SecurityContextHolder.getContext().setAuthentication(authentication);
+     SecurityContextHolder.getContext().setAuthentication(authentication);
 
-     // return "redirect:/dashboard";
-     // }
+     return "redirect:/dashboard";
+     }
 
      // deposit method to deposit money
      @PostMapping("/deposit")

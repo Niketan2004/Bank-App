@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
      <meta charset="UTF-8">
@@ -141,23 +141,24 @@
 
 
                <h3>Please Register Yourself</h3>
-               <form action="/register-user" th:action="@{/register-user}" method="post">
+               <form th:action="@{/register-user}" method="post">
                     <label for="fullName"> Enter Full name </label>
-                    <input type="text" name="fullName" placeholder="Full Name" required />
+                    <input type="text" name="fullName" placeholder="Full Name" id="fullName" required />
 
                     <label for="email"> Enter Email </label>
-                    <input type="email" name="email" placeholder="Email" required />
+                    <input type="email" name="email" placeholder="Email" id="email" required />
 
-                    <label for="phone">Phone Number</label>
-                    <input type="text" name="mobileNumber" placeholder="Mobile Number" required />
+                    <label for="mobileNumber">Phone Number</label>
+                    <input type="text" name="mobileNumber" placeholder="Mobile Number" id="mobileNumber" maxlength="10"
+                         required />
 
                     <label for="password"> Enter Password</label>
-                    <input type="password" name="password" placeholder="Password" required />
+                    <input type="password" name="password" placeholder="Password" id="password" required />
 
                     <label for="pin"> Set Transaction PIN </label>
-                    <input type="number" name="pin" placeholder="PIN" required />
+                    <input type="number" name="pin" placeholder="PIN" id="pin" required />
 
-                    <input type="submit" name="Register" id="submit" value="Register">
+                    <input type="submit" value="Register">
                     <input type="reset" name="" id="reset">
 
 
@@ -168,6 +169,27 @@
 
 
      </div>
+     <script>
+          const registrationForm = document.querySelector('form'); // Use a different name
+
+          registrationForm.addEventListener('submit', (event) => {
+               event.preventDefault(); // Prevent the form from submitting
+
+               const formData = new FormData(registrationForm);
+               const data = {};
+               formData.forEach((value, key) => {
+                    data[key] = value;
+               });
+
+               console.log('Form Data:', data);
+
+               // Optionally submit the form after logging
+               registrationForm.submit(); // Now it should work
+          });
+
+     </script>
+
+
 </body>
 
 </html>

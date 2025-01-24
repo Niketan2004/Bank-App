@@ -40,25 +40,16 @@ public class UserService implements UserDetailsService {
      }
 
      // Registers new user in database if it is not exists
-     public User registerUser(
-               String name, String email, String mobile,
-               String password,
-               long pin) throws Exception
-
-     {
-          if (userRepository.findUserByEmail(email).isPresent()) {
+     public void registerUser(
+               User user) throws Exception {
+          System.out.println(user.toString());
+          if (userRepository.findUserByEmail(user.getEmail()).isPresent()) {
                throw new Exception("User already Exists");
           }
-          User user = new User();
-          user.setFullName(name);
-          user.setEmail(email);
-          user.setMobileNumber(mobile);
-          user.setPassword(passwordEncoder.encode(password));
-          user.setPin(pin);
           user.setBalance(BigDecimal.ZERO);
 
           userRepository.save(user);
-          return user;
+          // return user;
      }
 
      // Deposit transaction
@@ -133,14 +124,26 @@ public class UserService implements UserDetailsService {
           userRepository.save(toUser);
      }
 
+     // @Override
+     // public UserDetails loadUserByUsername(String username) throws
+     // UsernameNotFoundException {
+     // User user = userRepository.findUserByEmail(username).orElseThrow();
+     // if (user == null) {
+     // throw new UsernameNotFoundException("User not found");
+     // }
+     // return new org.springframework.security.core.userdetails.User(
+     // user.getEmail(), user.getPassword(), new ArrayList<>()); // Add authorities
+     // here
+     // }
      @Override
-     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-          User user = userRepository.findUserByEmail(username).orElseThrow();
-          if (user == null) {
-               throw new UsernameNotFoundException("User not found");
+     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+          Optional<User> userOptional = userRepository.findUserByEmail(email);
+          if (userOptional.isEmpty()) {
+               throw new UsernameNotFoundException("User not found with email: " + email);
           }
+          User user = userOptional.get();
           return new org.springframework.security.core.userdetails.User(
-                    user.getEmail(), user.getPassword(), new ArrayList<>()); // Add authorities here
+                    user.getEmail(), user.getPassword(), new ArrayList<>()); // Return the user details
      }
 
      public Collection<? extends GrantedAuthority> authorities() {
