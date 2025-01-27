@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.BankApplication.Bank.App.Configuration.UserConfig;
 import com.BankApplication.Bank.App.Entity.User;
 import com.BankApplication.Bank.App.Repository.UserRepository;
 import com.BankApplication.Bank.App.Services.UserService;
@@ -33,11 +34,10 @@ public class BankAppController {
      @Autowired
      private UserService userService;
 
-     @Autowired
-     private UserRepository userRepository;
 
      @Autowired
      private AuthenticationManager authenticationManager;
+     
      @GetMapping("/test")
      public String test() {
           return "test";
@@ -95,50 +95,22 @@ public class BankAppController {
      }
 
      // register user to database and redirects it to dashboard
-     // @PostMapping("/register-user")
-     // public ResponseEntity<Map<String, Object>> registerUser(@RequestBody User user) {
-     //      Map<String, Object> response = new HashMap<>();
-     //      try {
-     //           // Process the user registration (save user to database, etc.)
-     //           userService.registerUser(user);
-
-     //           // Respond with success message
-     //           response.put("success", true);
-     //           return ResponseEntity.ok(response);
-     //      } catch (Exception e) {
-     //           // Handle registration error
-     //           response.put("success", false);
-     //           response.put("message", "Error registering user: " + e.getMessage());
-     //           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-     //      }
-     // }
-
      @PostMapping("/register-user")
-     public String registerUser(@ModelAttribute User user, Model model) {
-     System.out.println("Received user: " + user.toString()); // Should print theuser details
+     public String registerUser(@Valid @ModelAttribute User user, BindingResult result, Model model) {
+          if (result.hasErrors()) {
+               return "register"; // Show the registration form again if there are validation errors
+          }
 
-     try {
-    userService.registerUser(user);
-     return "redirect:/login"; // Redirect to login page
-     } catch (Exception e) {
-     model.addAttribute("error", e.getMessage());
-     return "redirect:/register"; // Redirect back to register page if there is an error
+          try {
+               userService.registerUser(user);
+               return "redirect:/login"; // Redirect to login page after successful registration
+          } catch (Exception e) {
+               model.addAttribute("error", e.getMessage()); // Pass error message to the frontend
+               return "register"; // Stay on the registration page if there's an error
+          }
      }
-     }
 
-     // Verify user when login and if exists redirect it to dashboard
-     @PostMapping("/login")
-     public String loginUser(@ModelAttribute User user, Model model) {
-     // // Perform authentication using Spring Security mechanisms
-     // // (e.g., username/password authentication)
-     Authentication authentication = authenticationManager.authenticate(
-     new UsernamePasswordAuthenticationToken(user.getEmail(),
-     user.getPassword()));
-
-     SecurityContextHolder.getContext().setAuthentication(authentication);
-
-     return "redirect:/dashboard";
-     }
+ 
 
      // deposit method to deposit money
      @PostMapping("/deposit")

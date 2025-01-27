@@ -40,15 +40,16 @@ public class UserService implements UserDetailsService {
      }
 
      // Registers new user in database if it is not exists
-     public void registerUser(
+     public User registerUser(
                User user) throws Exception {
-          System.out.println(user.toString());
+          // System.out.println(user.toString());
           if (userRepository.findUserByEmail(user.getEmail()).isPresent()) {
                throw new Exception("User already Exists");
           }
           user.setBalance(BigDecimal.ZERO);
+          user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-          userRepository.save(user);
+        return  userRepository.save(user);
           // return user;
      }
 
@@ -124,31 +125,21 @@ public class UserService implements UserDetailsService {
           userRepository.save(toUser);
      }
 
-     // @Override
-     // public UserDetails loadUserByUsername(String username) throws
-     // UsernameNotFoundException {
-     // User user = userRepository.findUserByEmail(username).orElseThrow();
-     // if (user == null) {
-     // throw new UsernameNotFoundException("User not found");
-     // }
-     // return new org.springframework.security.core.userdetails.User(
-     // user.getEmail(), user.getPassword(), new ArrayList<>()); // Add authorities
-     // here
-     // }
+
      @Override
      public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-          Optional<User> userOptional = userRepository.findUserByEmail(email);
-          if (userOptional.isEmpty()) {
-               throw new UsernameNotFoundException("User not found with email: " + email);
-          }
-          User user = userOptional.get();
+          User user = userRepository.findUserByEmail(email)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+
           return new org.springframework.security.core.userdetails.User(
-                    user.getEmail(), user.getPassword(), new ArrayList<>()); // Return the user details
+                    user.getEmail(),
+                    user.getPassword(),
+                    getAuthorities("USER") // Assign appropriate roles
+          );
      }
 
-     public Collection<? extends GrantedAuthority> authorities() {
-          // If roles are dynamic, fetch them from the database
-          return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+     private Collection<? extends GrantedAuthority> getAuthorities(String role) {
+          return List.of(new SimpleGrantedAuthority(role));
      }
 
 }

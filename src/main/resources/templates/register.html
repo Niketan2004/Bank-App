@@ -142,6 +142,7 @@
 
                <h3>Please Register Yourself</h3>
                <form th:action="@{/register-user}" method="post">
+                    <input type="hidden" name="_csrf" value="${_csrf.token}" />
                     <label for="fullName"> Enter Full name </label>
                     <input type="text" name="fullName" placeholder="Full Name" id="fullName" required />
 
@@ -156,7 +157,8 @@
                     <input type="password" name="password" placeholder="Password" id="password" required />
 
                     <label for="pin"> Set Transaction PIN </label>
-                    <input type="number" name="pin" placeholder="PIN" id="pin" required />
+                    <input type="number" name="pin" placeholder="Enter a  numeric PIN for secure transactions" id="pin"
+                         required />
 
                     <input type="submit" value="Register">
                     <input type="reset" name="" id="reset">
@@ -169,35 +171,9 @@
 
 
      </div>
-     <script>
-          const registrationForm = document.querySelector('form'); // Use a different name
 
-          registrationForm.addEventListener('submit', (event) => {
-               event.preventDefault(); // Prevent the form from submitting
-
-               const formData = new FormData(registrationForm);
-               const data = {};
-               formData.forEach((value, key) => {
-                    data[key] = value;
-               });
-
-               console.log('Form Data:', data);
-
-               // Optionally submit the form after logging
-               registrationForm.submit(); // Now it should work
-          });
-
-     </script>
 
 
 </body>
 
 </html>
-
-<!-- these data should be taken while registering
-private long accountNumber;
-private String fullName;
-private String email;
-private String mobileNumber;
-private String password;
-private long pin; -->

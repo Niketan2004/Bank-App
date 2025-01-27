@@ -159,7 +159,7 @@
           </form>
           <span>Don't have Account?<a href="/register" th:href="@{/register}"> Register Here</a></span>
      </div>
-     <div th:if="${error}" class="error-message">
+     <div th:if="${error}" th:text="${error.error-message}" class="error-message">
           Invalid username or password!
      </div>
 

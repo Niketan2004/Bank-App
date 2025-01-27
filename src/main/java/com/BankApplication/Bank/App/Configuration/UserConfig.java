@@ -41,20 +41,29 @@ public class UserConfig {
      public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
           return http
                     .csrf(csrf -> csrf.disable()) // Consider enabling CSRF protection in production
-                    .csrf(csrf -> csrf.disable())
                     .authorizeHttpRequests(
                               auth -> auth
-                                        .requestMatchers("/login", "/register", "/error", "/style.css", "/js/**", "/images/**","/test").permitAll()
+                                        .requestMatchers("/login", "/register", "/error", "/style.css", "/js/**",
+                                                  "/images/**", "/test")
+                                        .permitAll()
                                         .anyRequest().authenticated())
                     .formLogin(form -> form.loginPage("/login")
                               .loginProcessingUrl("/login")
                               .defaultSuccessUrl("/dashboard", true)
+                              .failureUrl("/login?error=true") // Handle login errors
                               .permitAll())
+
                     .logout(logout -> logout.invalidateHttpSession(true)
                               .clearAuthentication(true)
                               .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                               .logoutSuccessUrl("/login?logout")
                               .permitAll())
                     .build();
+     }
+
+     @Autowired
+     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+          auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+
      }
 }

@@ -51,5 +51,10 @@ public class User {
           this.balance = balance;
           this.transactions = transactions;
           this.authorities = authorities;
-    }
+     }
+    
+     // @Override
+     // public Collection<? extends GrantedAuthority> getAuthorities() {
+     //      return authorities;
+     // }
 }
