@@ -1,7 +1,5 @@
 package com.BankApplication.Bank.App.Configuration;
 
-import java.util.function.LongFunction;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +26,7 @@ public class UserConfig {
           return new BCryptPasswordEncoder();
      }
 
+     @SuppressWarnings("removal")
      @Bean
      public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
           return http.getSharedObject(AuthenticationManagerBuilder.class)

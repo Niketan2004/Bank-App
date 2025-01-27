@@ -1,15 +1,8 @@
 package com.BankApplication.Bank.App.Controller;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,13 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.BankApplication.Bank.App.Configuration.UserConfig;
 import com.BankApplication.Bank.App.Entity.User;
-import com.BankApplication.Bank.App.Repository.UserRepository;
 import com.BankApplication.Bank.App.Services.UserService;
 
 import jakarta.validation.Valid;
@@ -35,6 +22,7 @@ public class BankAppController {
      private UserService userService;
 
 
+     @SuppressWarnings("unused")
      @Autowired
      private AuthenticationManager authenticationManager;
      
